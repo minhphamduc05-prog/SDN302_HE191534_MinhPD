@@ -1,3 +1,0 @@
--Fullname: Pham Duc Minh
--Id: HE191534
--

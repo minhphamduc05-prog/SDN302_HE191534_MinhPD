@@ -4,7 +4,6 @@ const articles=data.articles;
 const articleRouter=express.Router();
 articleRouter.use(express.json());
 articleRouter.use(express.urlencoded({extended:true}));
-articleRouter.route("/article");
 
 articleRouter.route('/')
 .get(async(req,res)=>{

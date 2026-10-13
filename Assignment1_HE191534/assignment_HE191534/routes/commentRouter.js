@@ -4,7 +4,6 @@ const comments=data.comments;
 const commentRouter=express.Router();
 commentRouter.use(express.json());
 commentRouter.use(express.urlencoded({extended:true}));
-commentRouter.route("/comment");
 
 commentRouter.route('/')
 .get(async(req,res)=>{

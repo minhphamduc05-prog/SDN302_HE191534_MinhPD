@@ -12,10 +12,10 @@ exports.getAllBooks = async (req, res) => {
 
 exports.getBookById = async (req, res) => {
   try {
-    const book = await Book.collection.findOne({
+    const book = await Book.findOne({
       _id: req.params.id,
     });
-
+    
     if (!book) {
       return res.status(404).json({
         message: "Book not found",
@@ -40,7 +40,7 @@ exports.createBook = async (req, res) => {
 
 exports.updateBook = async (req, res) => {
   try {
-    const updatedBook = await Book.collection.findOneAndUpdate(
+    const updatedBook = await Book.findOneAndUpdate(
       { _id: req.params.id },
       { $set: req.body },
       { returnDocument: "after" }
@@ -60,7 +60,7 @@ exports.updateBook = async (req, res) => {
 
 exports.deleteBook = async (req, res) => {
   try {
-    const deletedBook = await Book.collection.findOneAndDelete({
+    const deletedBook = await Book.findOneAndDelete({
       _id: req.params.id,
     });
 
@@ -77,3 +77,4 @@ exports.deleteBook = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+//

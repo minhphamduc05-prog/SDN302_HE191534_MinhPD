@@ -9,15 +9,9 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => res.json({ message: 'Lab2 Library API is running' }));
-app.use('/books', bookRoutes);
-app.use('/members', memberRoutes);
-app.use('/loans', loanRoutes);
-
-app.use((req, res) => res.status(404).json({ success: false, message: 'API endpoint not found' }));
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ success: false, message: 'Internal server error' });
-});
+app.use('/api/books', bookRoutes);
+app.use('/api/members', memberRoutes);
+app.use('/api/loans', loanRoutes);
 
 const PORT = process.env.PORT || 9999;
 connectDB().then(() => app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`)));

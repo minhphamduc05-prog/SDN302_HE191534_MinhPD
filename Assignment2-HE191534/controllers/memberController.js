@@ -12,7 +12,7 @@ exports.getAllMembers = async (req, res) => {
 
 exports.getMemberById = async (req, res) => {
   try {
-    const member = await Member.collection.findOne({
+    const member = await Member.findOne({
       _id: req.params.id,
     });
 
@@ -38,7 +38,7 @@ exports.createMember = async (req, res) => {
 
 exports.updateMember = async (req, res) => {
   try {
-    const updatedMember = await Member.collection.findOneAndUpdate(
+    const updatedMember = await Member.findOneAndUpdate(
       { _id: req.params.id },
       { $set: req.body },
       { returnDocument: "after" }
@@ -56,7 +56,7 @@ exports.updateMember = async (req, res) => {
 
 exports.deleteMember = async (req, res) => {
   try {
-    const deletedMember = await Member.collection.findOneAndDelete({
+    const deletedMember = await Member.findOneAndDelete({
       _id: req.params.id,
     });
 
@@ -71,3 +71,4 @@ exports.deleteMember = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+//

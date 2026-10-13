@@ -4,10 +4,9 @@ const router = express.Router();
 
 const loanController = require('../controllers/loanController');
 
-router.get('/', loanController.getLoans);
-router.get('/member/:memberID', loanController.getMemberLoans);
+router.get('/', loanController.getAllLoans);
+router.get('/member/:memberID', loanController.getLoansByMemberId);
 router.get('/:id', loanController.getLoanById);
 router.post('/', loanController.createLoan);
-router.put('/:id/return', loanController.returnLoan);
 
 module.exports = router;

@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const c = require('../controllers/memberController');
-const asyncHandler = require('../utils/asyncHandler');
-router.get('/', asyncHandler(c.getMembers));
-router.get('/:id', asyncHandler(c.getMemberById));
-router.post('/', asyncHandler(c.createMember));
-router.put('/:id', asyncHandler(c.updateMember));
-router.delete('/:id', asyncHandler(c.deleteMember));
+
+router.get('/', c.getAllMembers);
+router.get('/:id', c.getMemberById);
+router.post('/', c.createMember);
+router.put('/:id', c.updateMember);
+router.delete('/:id', c.deleteMember);
 module.exports = router;

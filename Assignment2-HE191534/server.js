@@ -9,9 +9,9 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => res.json({ message: 'Lab2 Library API is running' }));
-app.use('/api/books', bookRoutes);
-app.use('/api/members', memberRoutes);
-app.use('/api/loans', loanRoutes);
+app.use('/books', bookRoutes);
+app.use('/members', memberRoutes);
+app.use('/loans', loanRoutes);
 
 app.use((req, res) => res.status(404).json({ success: false, message: 'API endpoint not found' }));
 app.use((err, req, res, next) => {

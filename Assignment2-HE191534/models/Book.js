@@ -1,21 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const bookSchema = new mongoose.Schema({
-  _id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
-  title: { type: String, required: [true, 'Title is required'], trim: true },
-  author: { type: String, required: [true, 'Author is required'], trim: true },
-  category: { type: String, required: [true, 'Category is required'], trim: true },
-  isbn: { type: String, required: [true, 'ISBN is required'], unique: true, trim: true },
-  publishedYear: { type: Number, min: [0, 'Published year cannot be negative'] },
-  totalCopies: { type: Number, required: true, min: [0, 'totalCopies cannot be negative'] },
-  availableCopies: { type: Number, required: true, min: [0, 'availableCopies cannot be negative'] }
-}, { timestamps: true });
+const bookSchema = new mongoose.Schema(
+  {
+    title: {type: String, required: true},
 
-bookSchema.pre('validate', function(next) {
-  if (this.availableCopies > this.totalCopies) {
-    this.invalidate('availableCopies', 'availableCopies cannot exceed totalCopies');
-  }
-  next();
-});
+    author: {type: String, required: true},
 
-module.exports = mongoose.model('Book', bookSchema);
+    category: {type: String, required: true},
+
+    isbn: {type: String, required: true, unique: true},
+
+    publishedYear: {type: Number},
+
+    totalCopies: {type: Number, min: 0},
+
+    availableCopies: {type: Number, min: 0},
+
+}, {timestamps: true});
+
+module.exports = mongoose.model("Book", bookSchema);

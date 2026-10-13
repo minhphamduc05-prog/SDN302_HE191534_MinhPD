@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const c = require('../controllers/bookController');
-const asyncHandler = require('../utils/asyncHandler');
-router.get('/', asyncHandler(c.getBooks));
-router.get('/:id', asyncHandler(c.getBookById));
-router.post('/', asyncHandler(c.createBook));
-router.put('/:id', asyncHandler(c.updateBook));
-router.delete('/:id', asyncHandler(c.deleteBook));
+
+router.get('/', c.getAllBooks);
+router.get('/:id', c.getBookById);
+router.post('/', c.createBook);
+router.put('/:id', c.updateBook);
+router.delete('/:id', c.deleteBook);
 module.exports = router;

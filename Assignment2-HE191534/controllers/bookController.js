@@ -1,50 +1,79 @@
-const mongoose = require('mongoose');
-const Book = require('../models/Book');
-const { handleMongooseError, sendError } = require('../utils/errors');
 
-exports.getBooks = async (req, res) => {
-  const books = await Book.find().sort({ title: 1 });
-  res.json({ success: true, count: books.length, data: books });
+const Book = require("../models/Book");
+
+exports.getAllBooks = async (req, res) => {
+  try {
+    const books = await Book.find();
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.getBookById = async (req, res) => {
-  const book = await Book.findById(req.params.id);
-  if (!book) return sendError(res, 404, 'Book not found');
-  res.json({ success: true, data: book });
+  try {
+    const book = await Book.collection.findOne({
+      _id: req.params.id,
+    });
+
+    if (!book) {
+      return res.status(404).json({
+        message: "Book not found",
+      });
+    }
+
+    res.status(200).json(book);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.createBook = async (req, res) => {
   try {
-    const required = ['title', 'author', 'isbn', 'category', 'totalCopies'];
-    const missing = required.filter(k => req.body[k] === undefined || req.body[k] === '');
-    if (missing.length) return sendError(res, 400, `Missing required fields: ${missing.join(', ')}`);
-    if (req.body.totalCopies < 0 || (req.body.availableCopies !== undefined && req.body.availableCopies < 0))
-      return sendError(res, 400, 'Book copies cannot be negative');
-    const payload = { ...req.body };
-    if (payload.availableCopies === undefined) payload.availableCopies = payload.totalCopies;
-    const book = await Book.create(payload);
-    res.status(201).json({ success: true, message: 'Book created successfully', data: book });
-  } catch (e) { handleMongooseError(e, res); }
+    const newBook = new Book(req.body);
+    const savedBook = await newBook.save();
+    res.status(201).json(savedBook);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
 exports.updateBook = async (req, res) => {
   try {
-    if (['totalCopies', 'availableCopies'].some(k => req.body[k] !== undefined && req.body[k] < 0))
-      return sendError(res, 400, 'Book copies cannot be negative');
-    const book = await Book.findById(req.params.id);
-    if (!book) return sendError(res, 404, 'Book not found');
-    Object.assign(book, req.body);
-    await book.save();
-    res.json({ success: true, message: 'Book updated successfully', data: book });
-  } catch (e) { handleMongooseError(e, res); }
+    const updatedBook = await Book.collection.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: req.body },
+      { returnDocument: "after" }
+    );
+
+    if (!updatedBook) {
+      return res.status(404).json({
+        message: "Book not found",
+      });
+    }
+
+    res.status(200).json(updatedBook);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
 exports.deleteBook = async (req, res) => {
-  const book = await Book.findById(req.params.id);
-  if (!book) return sendError(res, 404, 'Book not found');
-  const Loan = require('../models/Loan');
-  const referenced = await Loan.exists({ 'items.book_id': book._id, status: 'Borrowing' });
-  if (referenced) return sendError(res, 409, 'Cannot delete a book that is currently on loan');
-  await book.deleteOne();
-  res.json({ success: true, message: 'Book deleted successfully' });
+  try {
+    const deletedBook = await Book.collection.findOneAndDelete({
+      _id: req.params.id,
+    });
+
+    if (!deletedBook) {
+      return res.status(404).json({
+        message: "Book not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Book deleted successfully",
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };

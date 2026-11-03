@@ -1,6 +1,7 @@
 const express = require('express');
-const app = express();
 const connectDB = require('./config/db');
+const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get('/', async (req, res) => {
@@ -10,9 +11,9 @@ app.get('/', async (req, res) => {
         res.send({ error: error.message });
     }
 });
-app.get('/api/classes', require('./routes/classRoute'));
-app.get('/api/students', require('./routes/studentRoute'));
-app.get('/api/auth', require('./routes/authRoute'));
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/classes", require("./routes/classRoutes"));
+app.use("/api/students", require("./routes/studentRoutes"));
 
 connectDB();
 const PORT = process.env.PORT || 9999;

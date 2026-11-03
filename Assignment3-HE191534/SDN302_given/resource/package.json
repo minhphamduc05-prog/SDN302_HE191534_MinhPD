@@ -20,8 +20,7 @@
     "dotenv": "^16.6.1",
     "express": "^4.22.3",
     "jsonwebtoken": "^9.0.3",
-    "mogoose": "^0.0.1-security",
-    "mongoose": "^8.10.1",
+    "mongoose": "^8.24.8",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
